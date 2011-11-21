@@ -1,3 +1,6 @@
+NBCL (No Bullsh*t Command Line Parser)
+http://wiki.omegasdg.com/index.php?title=NBCL
+
 NBCL, also known as the No Bullsh*t Command Line Parser, is a simple command line parser library for C++ in just two files.
 
 After a great deal of frustration in trying to integrate multiple different command line parser libraries into our Tsunagari Tile Engine (http://tileengine.org/), I decided to write my own. Now, I've decided to split off Tsunagari's parser into a standalone library for general use.
