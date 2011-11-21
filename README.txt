@@ -8,7 +8,7 @@ Features:
 * There are no external dependencies.
 * No gratuitous configuration is required.
 * It's simple to use.
-* It's released under the ISC License for maximum freedom.
+* It's released under the MIT License for maximum freedom.
 
 Planned Features:
 * Non-option command line arguments.
