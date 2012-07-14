@@ -13,6 +13,3 @@ Features:
 * It's simple to use.
 * It's released under the MIT License for maximum freedom.
 
-Planned Features:
-* Non-option command line arguments.
-
