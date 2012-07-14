@@ -37,11 +37,13 @@ public:
 	void insert(std::string shortopt, std::string longopt,
 		std::string arg, std::string desc);
 
-	//! Set the name of the final argument.
+	//! Set the description of the stray arguments.
 	/*!
-		arg: A short description of the final argument. Defaults to "<name>".
+		arg: A short description of the stray arguments.
+		A stray argument is an argument not accompanied by an option switch.
+		Defaults to empty string.
 	*/
-	void setFinalArgName(std::string name);
+	void setStrayArgsDesc(std::string desc);
 
 	//! Process the command line.
 	/*!
@@ -64,12 +66,12 @@ public:
 	*/
 	std::string get(std::string longopt);
 
-	//! Get the final argument.
+	//! Get the stray arguments.
 	/*!
-		Returns string value of the final argument (one without a switch) if it
-			exists, empty string otherwise.
+		Returns a string vector of the stray arguments found on the command
+			line, in order.
 	*/
-	std::string getFinal();
+	std::vector<std::string> getStrayArgsList();
 
 	//! Print a pretty usage/help message.
 	/*!
@@ -78,6 +80,8 @@ public:
 	void usage();
 
 private:
+	int findOpt(std::string name);
+
 	void usageSize(int* optmax, int* argmax);
 	void usagePrintShort();
 	void usagePrintLong(int optmax, int argmax);
@@ -96,10 +100,10 @@ private:
 		bool present;
 		std::string value;
 	};
-	std::string finalArgName;
-	std::string finalArgValue;
-
 	std::vector<Option*> OptList;
+
+	std::string strayArgsDesc;
+	std::vector<std::string> strayArgsList;
 };
 
 #endif

@@ -9,9 +9,8 @@
 #include "nbcl.h"
 
 NBCL::NBCL(int argc, char** argv) :
-	argc(argc), argv(argv)
+	argc(argc), argv(argv), strayArgsDesc("")
 {
-	finalArgName = "<name>";
 }
 
 NBCL::~NBCL()
@@ -35,68 +34,51 @@ void NBCL::insert(std::string shortopt, std::string longopt,
 	OptList.push_back(opt);
 }
 
-void NBCL::setFinalArgName(std::string name)
+void NBCL::setStrayArgsDesc(std::string desc)
 {
-	finalArgName = name;
+	strayArgsDesc = desc;
 }
 
-/* TODO: Clean up and rewrite to handle final argument. */
 bool NBCL::parse()
 {
 	int argn;
-	unsigned int opt;
-	bool found;
+	int opt;
 
 	for (argn = 1; argn < argc; argn++) { /* Read command line. */
-		found = false;
-
-		for (opt = 0; opt < OptList.size(); opt++) {
-			if (!OptList[opt]->shortopt.compare(argv[argn]) || !OptList[opt]->longopt.compare(argv[argn])) {
-				found = true; /* We found a command line option. */
-				OptList[opt]->present = true; /* This option has been called. */
-
-				if (!OptList[opt]->arg.empty()) { /* Read in option value. */
-					if (argn + 1 < argc) {
-						OptList[opt]->value = argv[argn+1];
-						argn += 1;
-					}
-
-					else
-						return false;
+		opt = findOpt(argv[argn]);
+		if (opt!=-1) { /* This argument is an option switch. */
+			if (!OptList[opt]->arg.empty()) { /* It takes an argument. */
+				if (argn + 1 < argc) {
+					OptList[opt]->value = argv[argn+1]; /* Add next argument as the option value. */
+					argn++;
 				}
-
-				break; /* Check to see if another option was called. */
+				else
+					return false;
 			}
+			OptList[opt]->present = true; /* Tell the option it exists. */
 		}
-		if (!found) /* We didn't find any command line options. */
-			return false;
-
+		else /* This argument is a stray. */
+			strayArgsList.push_back(argv[argn]);
 	}
 	return true;
 }
 
 bool NBCL::check(std::string longopt)
 {
-	unsigned int search;
-
-	for (search = 0; search < OptList.size(); search++) {
-		if (!OptList[search]->longopt.compare(longopt)) /* Option was used. */
-			return OptList[search]->present;
-	}
-
-	return false;
+	int opt = findOpt(longopt);
+	if (opt!=-1)
+		return OptList[opt]->present;
+	else
+		return false;
 }
 
 std::string NBCL::get(std::string longopt)
 {
-	unsigned int search;
-
-	for (search = 0; search < OptList.size(); search++) {
-		if (!OptList[search]->longopt.compare(longopt)) /* Option was found. */
-			return OptList[search]->value;
-	}
-
-	return "";
+	int opt = findOpt(longopt);
+	if (opt!=-1)
+		return OptList[opt]->value;
+	else
+		return "";
 }
 
 void NBCL::usage()
@@ -109,9 +91,9 @@ void NBCL::usage()
 	usagePrintLong(optmax, argmax);
 }
 
-std::string NBCL::getFinal()
+std::vector<std::string> NBCL::getStrayArgsList()
 {
-	return final;
+	return strayArgsList;
 }
 
 /* Makes width calculations needed for formatting usage output. */
@@ -130,7 +112,8 @@ void NBCL::usageSize(int* optmax, int* argmax)
 
 void NBCL::usagePrintShort()
 {
-	fprintf(stderr, "Usage: %s [OPTIONS]", argv[0]);
+	fprintf(stderr, "Usage: %s [OPTIONS] ", argv[0]);
+	fprintf(stderr, strayArgsDesc.c_str());
 }
 
 /* Lots of ugly formatting code. */
@@ -166,10 +149,21 @@ std::string NBCL::itostr(int in)
 	return out.str();
 }
 
+int NBCL::findOpt(std::string name)
+{
+	for (unsigned int opt = 0; opt < OptList.size(); opt++) {
+		if (!OptList[opt]->shortopt.compare(name) ||
+			!OptList[opt]->longopt.compare(name))
+				return opt;
+	}
+	return -1;
+}
+
 /* Thanks to:
  * http://stackoverflow.com/questions/1022957
  * http://stackoverflow.com/questions/6812224
 */
+/* TODO: Use for breaking lines on small consoles. */
 unsigned int NBCL::getConsoleWidth()
 {
 	#if defined __unix__ || defined __APPLE__
