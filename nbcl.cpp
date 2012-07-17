@@ -5,6 +5,7 @@
 ************************************/
 
 #include <stdio.h>
+#include <string.h>
 
 #include "nbcl.h"
 
@@ -112,7 +113,16 @@ void NBCL::usageSize(int* optmax, int* argmax)
 
 void NBCL::usagePrintShort()
 {
-	fprintf(stderr, "Usage: %s [OPTIONS] ", argv[0]);
+	#ifdef _WIN32
+		char fname[_MAX_FNAME];
+		char ext[_MAX_EXT];
+		_splitpath(argv[0], NULL, NULL, fname, ext);
+		if (ext[strlen(ext)-1] == ' ') /* Windows thinks I want a space at the end. It's wrong. */
+			ext[strlen(ext)-1] = 0;
+		fprintf(stderr, "Usage: %s%s [OPTIONS] ", fname, ext);
+	#else
+		fprintf(stderr, "Usage: %s [OPTIONS] ", argv[0]);
+	#endif
 	fprintf(stderr, strayArgsDesc.c_str());
 }
 
