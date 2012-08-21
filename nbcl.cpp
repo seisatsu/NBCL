@@ -148,8 +148,6 @@ void NBCL::usagePrintLong(int optmax, int argmax)
 
 		fprintf(stderr, "%s\n", OptList[opt]->desc.c_str());
 	}
-
-	fprintf(stderr, "\n\n");
 }
 
 std::string NBCL::itostr(int in)
