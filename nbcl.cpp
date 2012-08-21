@@ -58,6 +58,8 @@ bool NBCL::parse()
 			}
 			OptList[opt]->present = true; /* Tell the option it exists. */
 		}
+		else if (argv[argn][0] == '-') /* Nonexistent option. */
+			return false;
 		else /* This argument is a stray. */
 			strayArgsList.push_back(argv[argn]);
 	}
