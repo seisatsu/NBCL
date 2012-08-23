@@ -145,7 +145,7 @@ void NBCL::usagePrintShort()
 	#else
 		fprintf(stderr, "Usage: %s [OPTIONS] ", argv[0]);
 	#endif
-	fprintf(stderr, strayArgsDesc.c_str());
+	fprintf(stderr, "%s", strayArgsDesc.c_str());
 }
 
 /* Lots of ugly formatting code. */
