@@ -2,9 +2,8 @@
 ** No Bullsh*t Command Line Parser **
 ** nbcl.cpp                        **
 ** Copyright 2011-2012 OmegaSDG    **
+** Copyright 2013 PariahSoft LLC   **
 ************************************/
-
-// "OmegaSDG" is defined as Michael D. Reiley and Paul Merrill.
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy 
