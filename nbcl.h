@@ -1,9 +1,8 @@
-/************************************
-** No Bullsh*t Command Line Parser **
-** nbcl.h                          **
-** Copyright 2011-2012 OmegaSDG    **
-** Copyright 2013 PariahSoft LLC   **
-************************************/
+/*****************************************
+** No Bullsh*t Command Line Parser      **
+** nbcl.h                               **
+** Copyright 2011-2013 PariahSoft LLC   **
+*****************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy 

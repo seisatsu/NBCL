@@ -1,5 +1,5 @@
 NBCL (No Bullsh*t Command Line Parser)
-http://wiki.omegasdg.com/index.php?title=NBCL
+http://wiki.pariahsoft.com/index.php?title=NBCL
 
 NBCL, also known as the No Bullsh*t Command Line Parser, is a simple command line parser library for C++ in just two files.
 
