@@ -79,7 +79,12 @@ bool NBCL::parse()
 			OptList[opt]->present = true; /* Tell the option it exists. */
 		}
 		else if (argv[argn][0] == '-') /* Nonexistent option. */
+#ifdef __APPLE__
+			/* Mac OSX 10.7 sends some arguments to its applications on launch. Ignore these. */
+			continue;
+#else
 			return false;
+#endif
 		else /* This argument is a stray. */
 			strayArgsList.push_back(argv[argn]);
 	}
